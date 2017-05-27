@@ -65,51 +65,51 @@ Akan menerima dari Reducer data single karakter array ['a', 's', 'd', 'f'].
 
 1. Membuat function reducer:
 
-        const reducer = () => [];
+	const reducer = () => [];
 
 2. Create Store:
 
-        const store = Redux.createStore();
+    const store = Redux.createStore();
 
 
 3. Lewatkan reducer ke dalam store argument:
 
-        const store = Redux.createStore(reducer);
+    const store = Redux.createStore(reducer);
 
 4. Menampilkan store pada state saat ini (current state):
 
-        store.getState();
+    store.getState();
 
 5. Membuat action -> plain JS object, action memiliki 2 property -> type (instruksi) & payload (data yang akan dimodifikasi).
 
-   		const action = {
-			type: 'split_string',
-			payload: 'asdf'
-        };         
+   	const action = {
+		type: 'split_string',
+		payload: 'asdf'
+    };         
 
 6. Mengupdate reducer untuk menghandle action, reducer memiliki 2 argument: current state & action. 
 
-		const reducer = (state = [], action) => {
-			if (action.type === 'split_string'){
-				return action.payload.split('');
-			}
-				return state; 
-		};
+	const reducer = (state = [], action) => {
+		if (action.type === 'split_string'){
+			return action.payload.split('');
+		}
+			return state; 
+	};
 
 7. Meneruskan perintah Action ke Reducer dengan perintah: **dispatch(action)**;
 
-		store.dispatch(action);
+	store.dispatch(action);
 
 8. Menampilkan hasil update state
 
-		store.getState();
+	store.getState();
 
 9. Hasilnya kolom sebelah kanan:
 
-		[]
-		[]
-		{"type":"split_string","payload":"asdf"}
-		["asdf"]
+	[]
+	[]
+	{"type":"split_string","payload":"asdf"}
+	["asdf"]
 
 **Menambah action baru**
 
@@ -123,36 +123,36 @@ Akan menerima dari Reducer data single karakter array ['a', 's', 'd', 'f'].
 
 Baris 25, Untuk menambah action baru:
 
-		const action2 = {
-			type: 'add_character',
-			payload: 'a'
-		}
+	const action2 = {
+		type: 'add_character',
+		payload: 'a'
+	}
 
 Baris 31, Meneruskan action ke reducer:
 
-		store.dispatch(action2);
+	store.dispatch(action2);
 
 Baris 33, Menampilkan state yg sudah terupdate:
 
-		store.getState();
+	store.getState();
 
 Baris 4, Menambahkan else if :
 		
-		} else if (action.type === 'add_character'){
+	} else if (action.type === 'add_character'){
 
 Baris 5 - 6, Melakukan return dengan mutable state:
 
-		//state.push(action.payload);
-		//return state;
+	//state.push(action.payload);
+	//return state;
 
 Baris 7, Melakukan return dengan menambahkan state baru:
 
-		return [...state, action.payload];
+	return [...state, action.payload];
 								
 Hasilnya: 
 
-		{"type":"add_character","payload":"a"}
-		["a","s","d","f","a"]
+	{"type":"add_character","payload":"a"}
+	["a","s","d","f","a"]
 
 ### Membuat aplikasi Redux dengan React Native
 
@@ -164,6 +164,16 @@ Hasilnya:
 
 	npm install --save redux react-redux
 
+**Menyiapkan Android Emulator, dengan Android Studio atau lainnya**
+
+	Open new folder > technology_stack
+
+**Dari terminal cmd, run Emulator app**
+
+	react-native run-android
+
+![and-emulator](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_453,w_200/v1495870704/and-emulator_czcw9f.png)
+
 **Membuka aplikasi dengan code editor tambahkan folder baru src**
 
 	/src
@@ -171,5 +181,22 @@ Hasilnya:
 **Tambahkan file app.js**
 
 	/src/app.js
+
+Tambahkan component sbb:
+
+	import React, { Component } from 'react';
+	import { View } from 'react-native';
+
+	const App = () => {
+		return(
+			<View />
+		);
+	};
+
+**Hapus semua file pada:**
+
+	index.android.js & index.ios.js
+
 	
-		
+
+
