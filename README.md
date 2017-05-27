@@ -87,11 +87,11 @@ Akan menerima dari Reducer data single karakter array ['a', 's', 'd', 'f'].
 			payload: 'asdf'
         };         
 
-6. Mengupdate reducer -> reducer memiliki 2 argement: current state & action. 
+6. Mengupdate reducer untuk menghandle action, reducer memiliki 2 argument: current state & action. 
 
 		const reducer = (state = [], action) => {
 			if (action.type === 'split_string'){
-				return action.payload.split(' ');
+				return action.payload.split('');
 			}
 				return state; 
 		};
@@ -103,5 +103,73 @@ Akan menerima dari Reducer data single karakter array ['a', 's', 'd', 'f'].
 8. Menampilkan hasil update state
 
 		store.getState();
+
+9. Hasilnya kolom sebelah kanan:
+
+		[]
+		[]
+		{"type":"split_string","payload":"asdf"}
+		["asdf"]
+
+**Menambah action baru**
+
+![action2](http://res.cloudinary.com/medioxtra/image/upload/v1495866691/Menambah_action_baru_af8iax.png)
+
+**Update Reducer lagi**
+
+![Update reducer lagi](http://res.cloudinary.com/medioxtra/image/upload/v1495866847/Update_reducer_lagi_v5edi5.png)
+
+**Detail Code**
+
+Baris 25, Untuk menambah action baru:
+
+		const action2 = {
+			type: 'add_character',
+			payload: 'a'
+		}
+
+Baris 31, Meneruskan action ke reducer:
+
+		store.dispatch(action2);
+
+Baris 33, Menampilkan state yg sudah terupdate:
+
+		store.getState();
+
+Baris 4, Menambahkan else if :
 		
-						 
+		} else if (action.type === 'add_character'){
+
+Baris 5 - 6, Melakukan return dengan mutable state:
+
+		//state.push(action.payload);
+		//return state;
+
+Baris 7, Melakukan return dengan menambahkan state baru:
+
+		return [...state, action.payload];
+								
+Hasilnya: 
+
+		{"type":"add_character","payload":"a"}
+		["a","s","d","f","a"]
+
+### Membuat aplikasi Redux dengan React Native
+
+**Membuat new aplikasi**
+
+	react-native init technology_stack
+
+**Menginstall library Redux & React Redux**
+
+	npm install --save redux react-redux
+
+**Membuka aplikasi dengan code editor tambahkan folder baru src**
+
+	/src
+
+**Tambahkan file app.js**
+
+	/src/app.js
+	
+		
