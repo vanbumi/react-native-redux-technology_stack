@@ -162,13 +162,17 @@ Hasilnya:
 
 **Menginstall library Redux & React Redux**
 
+Buka cli dengan Administrator, ketik:
+
 	npm install --save redux react-redux
+
+![instal redux](http://res.cloudinary.com/medioxtra/image/upload/v1495921096/instal_redux_react-redux_utr0hk.png)	
 
 **Menyiapkan Android Emulator, dengan Android Studio atau lainnya**
 
 	Open new folder > technology_stack
 
-**Dari terminal cmd, run Emulator app**
+**Dari terminal cmd, jalankan Emulator Android**
 
 	react-native run-android
 
@@ -184,7 +188,7 @@ Hasilnya:
 
 Tambahkan component sbb:
 
-	import React, { Component } from 'react';
+	import React from 'react';
 	import { View } from 'react-native';
 
 	const App = () => {
@@ -193,10 +197,84 @@ Tambahkan component sbb:
 		);
 	};
 
+	export default App;
+
 **Hapus semua file pada:**
 
 	index.android.js & index.ios.js
 
-	
+**Dan ketik code minimum untuk ke dua file tsb:**
 
+	import { AppRegistry } from 'react-native';
+	import App from './src/app'
 
+	AppRegistry.registerComponent('technology_stack', () => App);
+
+**Update file app.js dengan menambahkan Redux**
+
+	import React from 'react';
+	import { View } from 'react-native';
+	import { Provider } from 'react-redux';
+	import { createStore } from 'redux';
+
+	const App = () => {
+		return(
+			<Provider store={createStore}>
+				<View />
+			</Provider>
+		)
+	};
+
+	export default App;	 	
+
+Detail Code:
+
+- Tambahkan import Provide dari react-native.
+- Tambahkan import createStore dari redux.
+- Bungkus View dengan Provider Tag dan teruskan createStore pada store property. 
+
+![diagram-provider](http://res.cloudinary.com/medioxtra/image/upload/v1495922876/diagram-provider_orqm1a.png)
+
+Detail gambar:
+
+- Provider Tag bekerja sama dengan Store.
+- Masing-masing memiliki tugas spesifik.
+- Store menyimpan aplikasi state atau semua data didalam aplikasi.
+- Provider translate semua data yang ada di Store sehingga dapat digunakan pada React Aplikasi.
+- Provider sebagai perekat komunikasikan dengan React. 
+
+### Menambahkan reducers
+
+* Didalam folder src tambkan folder baru reducers dan file index.js didalam folder reducers, serta ketikkan code sbb:
+
+	import { combineReducer } from 'redux';
+
+	export default combineReducer({
+		libraries: () => []
+	}); 
+
+Penjelasan code:
+
+- Import combineReducer dari Redux, menggunakan combine karena akan lebih dari satu reducer yang akan di import nantinya.
+- Sebagai default export combineReducer, yang melewatkan libaries function yang akan mengembalikan array kosong.
+
+* Udate file app.js dengan menambahkan code sbb:
+
+import reducers from './reducers'; 
+
+	const App = () => {
+		return(
+			<Provider store={createStore(reducers)}>
+				<View />
+			</Provider>
+		)
+	};
+
+export default App;	  	
+
+Penjelasan code:
+
+- import reducer dari folder reducers tadi.
+- teruskan reducers di store property, dimana setiap create Store harus melewatkan 1 buah function reducers.
+
+next video 83 need to copy common directory from auth lesson, so i need to do auth lesson dude!.
