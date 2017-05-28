@@ -277,4 +277,25 @@ Penjelasan code:
 - import reducer dari folder reducers tadi.
 - teruskan reducers di store property, dimana setiap create Store harus melewatkan 1 buah function reducers.
 
-next video 83 need to copy common directory from auth lesson, so i need to do auth lesson dude!.
+### Membuat header & render header.
+
+* Buat folder baru components > common : 
+
+	Kemudian buat component2x sebagai berikut: 
+	Button.js, Card.js, CardSection.js, Header.js, index.js, Input.js, Spinner.js 
+	-> file ini adalah component reusable, silahkan download dari file repo.
+
+* Import Header di app.js
+
+	import { Header } from './components/common' 
+
+* Update code nya:
+
+		<Provider store={createStore(reducers)}>
+			<View>
+				<Header headerText='Technology Stack' />
+			</View>
+		</Provider>
+
+* Refresh emolator screen.
+
