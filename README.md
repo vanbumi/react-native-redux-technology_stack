@@ -10,7 +10,32 @@ Anda dapat menggunakan Redux untuk aplikasi React, atau dengan view library yang
 
 ![diagram-redux](http://res.cloudinary.com/medioxtra/image/upload/v1495836771/Redux_ripkwn.png)
 
+**Detail Diagram**
+
+**Reducer** adalah function yang memiliki kembalian data (return some data).
+
+**Action** adalah plain **JavaScript Object** ( "{ }" ) yang memberitahukan Reducer cara memodifikasi data. Syarat dari Action adalah harus memiliki sebuah **type** property.
+
+**State** adalah Data dari sebuah aplikasi yang digunakan, misalnya: value dari input field, data list, gambar, seluruh data yang berada di dalam aplikasi, dikumpulkan menjadi **State**.
+
+**Store** adalah container yang menyimpan Reducer & State pada sebuah aplikasi.
+
+> **Untuk Diingat** Jadi Redux merukan satu kesatuan yang terdiri dari **Store** & **Action**, dimana Store terdiri dari **Reducer** & **State**.
+
 ### Cara membuat Redux
+
+	// Step membuat Redux
+
+	// 1-Membuat function reducer
+	const reducer = () => [];
+
+	// 2-Membuat store
+	const store = Redux.createStore(reducer);
+
+	// 3-Menampilkan current state
+	store.getState();
+
+**Detail code**
 
 1. Membuat function reducer:
 
@@ -20,7 +45,6 @@ Anda dapat menggunakan Redux untuk aplikasi React, atau dengan view library yang
 
         const store = Redux.createStore();
 
-
 3. Lewatkan reducer ke dalam store argument:
 
         const store = Redux.createStore(reducer);
@@ -29,22 +53,12 @@ Anda dapat menggunakan Redux untuk aplikasi React, atau dengan view library yang
 
         store.getState();
 
-![create-redux](http://res.cloudinary.com/medioxtra/image/upload/v1495839324/redux_efae12.png)                
+![create-redux](http://res.cloudinary.com/medioxtra/image/upload/v1495839324/redux_efae12.png)   
 Ralat *empty array 
-
-**Reducer** adalah function yang memproduksi (return) beberapa jumlah data.
-
-**Action** adalah plain JavaScript object ( "{ }" ) yang memberitahukan Reducer cara memodifikasi data.
-Action memiliki satu syarat harus memiliki sebuah **type** property.
-
-**State** adalah Data aplikasi, misalnya: value dari input field, data list, gambar, seluruh data yang berada di dalam aplikasi, dikumpulkan menjadi **State**.
-
-**Store** adalah container yang menyimpan Reducer & State dalam sebuah aplikasi. 
 
 ### Contoh aplikasi kecil Redux
 
-Sebuah string 'asdf' (kata/word) akan dirubah (split) menjadi menjadi karakter (huruf) array:
-
+Sebuah string 'asdf' (kata/word) akan dirubah (split) menjadi menjadi array dari single karakter (huruf) :
 
 ![contoh-redux](http://res.cloudinary.com/medioxtra/image/upload/v1495859052/Redux-contoh-case_jqxexi.png)
 
@@ -52,7 +66,7 @@ Sebuah string 'asdf' (kata/word) akan dirubah (split) menjadi menjadi karakter (
 Memuat string: 'asdf' & instruksi: split, kemudian di lewatkan/oper/teruskan ke Reducer.
 
 **Reducer**
-Akan mereturn/mengembalikan string yang sudah di split kedalam sebuah array, kemdian di teruskan ke State.
+Akan me-return/mengembalikan string yang sudah di split kedalam sebuah array, kemdian di teruskan ke State.
 
 **State**
 Akan menerima dari Reducer data single karakter array ['a', 's', 'd', 'f'].
@@ -61,55 +75,62 @@ Akan menerima dari Reducer data single karakter array ['a', 's', 'd', 'f'].
 
 ![tiny-app-redux](http://res.cloudinary.com/medioxtra/image/upload/v1495861579/Redux_sample_tiny_app_dkpooy.png)
 
-**Detail Code**
+**Membuat aplikasi redux 'asdf'**
 
-1. Membuat function reducer:
-
-	const reducer = () => [];
-
-2. Create Store:
-
-    const store = Redux.createStore();
-
-
-3. Lewatkan reducer ke dalam store argument:
-
-    const store = Redux.createStore(reducer);
-
-4. Menampilkan store pada state saat ini (current state):
-
-    store.getState();
-
-5. Membuat action -> plain JS object, action memiliki 2 property -> type (instruksi) & payload (data yang akan dimodifikasi).
-
-   	const action = {
+	// 1-Membuat Action
+	const action = {
 		type: 'split_string',
-		payload: 'asdf'
-    };         
-
-6. Mengupdate reducer untuk menghandle action, reducer memiliki 2 argument: current state & action. 
-
-	const reducer = (state = [], action) => {
-		if (action.type === 'split_string'){
-			return action.payload.split('');
-		}
-			return state; 
+	payload: 'asdf'
 	};
 
-7. Meneruskan perintah Action ke Reducer dengan perintah: **dispatch(action)**;
+	// 2-Mengupdate function reducer
+	const reducer = (state=[], action) => {
+		if (action.type === 'split_string') {
+		return action.payload.split('');
+	}
+	
+	return state;
+	};
 
+	// 3-Membuat store
+	const store = Redux.createStore(reducer);
+
+	// 4-Meneruskan action ke reducer
 	store.dispatch(action);
 
-8. Menampilkan hasil update state
-
+	// 5-Menampilkan current state
 	store.getState();
 
-9. Hasilnya kolom sebelah kanan:
+**Detail Code**
 
-	[]
-	[]
-	{"type":"split_string","payload":"asdf"}
-	["asdf"]
+1. Membuat action -> plain **JS Object**, action memiliki 2 property -> **type** (instruksi) & **payload** (data yang akan dimodifikasi).
+
+		const action = {
+			type: 'split_string',
+			payload: 'asdf'
+		};         
+
+2. Mengupdate reducer untuk menghandle action, reducer memiliki 2 argument: **current state** & **action**. 
+
+		const reducer = (state = [], action) => {
+			if (action.type === 'split_string'){
+				return action.payload.split('');
+			}
+				return state;
+		};
+
+3. Meneruskan perintah Action ke Reducer dengan perintah: **dispatch(action)**;
+
+		store.dispatch(action);
+
+4. Menampilkan hasil update state
+
+		store.getState();
+
+5. Hasilnya kolom sebelah kanan:
+
+		{"type":"split_string","payload":"asdf"}
+		["a","s","d","f"]
 
 **Menambah action baru**
 
@@ -297,5 +318,46 @@ Penjelasan code:
 			</View>
 		</Provider>
 
-* Refresh emolator screen.
+* Refresh emulator screen.
 
+![tech_stack](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_300,w_150/v1495948874/technology_stack_vnas6e.png)
+
+### Membuat State Library
+
+Kita akan membuat State Library, dalam aplikasi ini akan ada 2 buah library data, yaitu *List of Library* dan *Library Currently Selected*, List Library adalah daftar seluruh data dan Library Selected adalah data yang di select/view oleh user.
+
+Aplikasi ini tidak melibatkan database di server, sebaliknya *hard coding* (statik data) didalam app itu sendiri (daftar data akan di masukan ke dalam aplikasi secara manual).
+
+#### Reducer
+
+**Reducer** menghasilkan **State** data dan State adalah **Data** dari sebuah aplikasi. Didalam folder reducers index.js akan memuat libary data di dalamnya:
+
+	libraries = () => {
+		[...]
+	};
+
+Kita akan membuat 2 buah reducer terpisah, yaitu Library Reducer dan Selection Reducer.
+
+![two-reducers](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_200,w_700/v1495953135/dua-reducer_yjstan.png)
+
+Untuk itu buat file baru LibraryReducer.js dalam folder reducers, dan tuliskan code:
+
+	export default () => [];
+
+Kemudian import ke dalam index.js
+
+	import LibraryReducer from './LibraryReducer';
+
+Update function combineReducer sbb:
+
+	export default combineReducers({
+		libraries: LibraryReducer
+	}); 		
+
+Detail code -> Perlu di ingat disini kita lakukan assign **LibraryReducer** dengan **KEY** **libraries**.
+
+Membuat file json LibraryList.json di dalam folder reducers. (Silahkan copas file json di repository).
+
+> **Catatan** file json memuat content seluruh nya adalah string, jadi seluruh text content selain value integer harus diberi *"double/single quote"*, contoh: "id": 0, "title": "Webpack"..
+
+next 87 connect function.
