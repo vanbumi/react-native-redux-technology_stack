@@ -175,7 +175,7 @@ Hasilnya:
 	{"type":"add_character","payload":"a"}
 	["a","s","d","f","a"]
 
-### Membuat aplikasi Redux dengan React Native
+## Membuat aplikasi Redux dengan React Native
 
 **Membuat new aplikasi**
 
@@ -207,7 +207,7 @@ Buka cli dengan Administrator, ketik:
 
 	/src/app.js
 
-Tambahkan component sbb:
+Tambahkan component pada app.js sbb:
 
 	import React from 'react';
 	import { View } from 'react-native';
@@ -231,7 +231,7 @@ Tambahkan component sbb:
 
 	AppRegistry.registerComponent('technology_stack', () => App);
 
-**Update file app.js dengan menambahkan Redux**
+**Update file app.js dengan menambahkan Redux Provider & createStore**
 
 	import React from 'react';
 	import { View } from 'react-native';
@@ -248,69 +248,70 @@ Tambahkan component sbb:
 
 	export default App;	 	
 
-Detail Code:
+**Detail Code**:
 
-- Tambahkan import Provide dari react-native.
-- Tambahkan import createStore dari redux.
-- Bungkus View dengan Provider Tag dan teruskan createStore pada store property. 
+- import **Provider** dari react-native.
+- import **createStore** dari redux.
+- Bungkus **View Tag** dengan **Provider Tag** dan teruskan **createStore** pada store property. 
 
 ![diagram-provider](http://res.cloudinary.com/medioxtra/image/upload/v1495922876/diagram-provider_orqm1a.png)
 
-Detail gambar:
+**Detail gambar**:
 
 - Provider Tag bekerja sama dengan Store.
 - Masing-masing memiliki tugas spesifik.
-- Store menyimpan aplikasi state atau semua data didalam aplikasi.
-- Provider translate semua data yang ada di Store sehingga dapat digunakan pada React Aplikasi.
-- Provider sebagai perekat komunikasikan dengan React. 
+- Store menyimpan  State aplikasi atau semua data didalam aplikasi.
+- Provider menterjemahkan semua data yang ada di Store sehingga dapat digunakan pada React Aplikasi.
+- Provider sebagai **Perekat Komunikasi** dengan React. 
 
 ### Menambahkan reducers
 
-* Didalam folder src tambkan folder baru reducers dan file index.js didalam folder reducers, serta ketikkan code sbb:
+1. Didalam folder src tambkan folder baru **reducers** dan file index.js didalam nya, serta ketikkan code sbb:
 
-	import { combineReducer } from 'redux';
+		import { combineReducer } from 'redux';
 
-	export default combineReducer({
-		libraries: () => []
-	}); 
+		export default combineReducer({
+			libraries: () => []
+		}); 
 
-Penjelasan code:
+**Penjelasan code**:
 
-- Import combineReducer dari Redux, menggunakan combine karena akan lebih dari satu reducer yang akan di import nantinya.
-- Sebagai default export combineReducer, yang melewatkan libaries function yang akan mengembalikan array kosong.
+- Import **combineReducer** dari **Redux**, menggunakan combine karena akan lebih dari satu **reducer** yang akan di import nantinya.
+- Export default combineReducer, yang melewatkan **libraries function** yang mengembalikan array kosong.
 
-* Udate file app.js dengan menambahkan code sbb:
+2. Udate file app.js dengan menambahkan code sbb:
 
-import reducers from './reducers'; 
+		import reducers from './reducers'; 
 
-	const App = () => {
-		return(
-			<Provider store={createStore(reducers)}>
-				<View />
-			</Provider>
-		)
-	};
+		const App = () => {
+			return(
+				<Provider store={createStore(reducers)}>
+					<View />
+				</Provider>
+			)
+		};
 
-export default App;	  	
+		export default App;	  	
 
-Penjelasan code:
+**Penjelasan code**:
 
-- import reducer dari folder reducers tadi.
-- teruskan reducers di store property, dimana setiap create Store harus melewatkan 1 buah function reducers.
+- import **reducer** dari **folder reducers** tadi.
+- teruskan reducers di **store property**, *dimana setiap create **Store** harus melewatkan 1 buah **function reducers***.
 
 ### Membuat header & render header.
 
-* Buat folder baru components > common : 
+1. Buat folder baru components > common : 
 
 	Kemudian buat component2x sebagai berikut: 
 	Button.js, Card.js, CardSection.js, Header.js, index.js, Input.js, Spinner.js 
-	-> file ini adalah component reusable, silahkan download dari file repo.
 
-* Import Header di app.js
+	-> file ini adalah component reusable, silahkan download dari file repo ini.
 
-	import { Header } from './components/common' 
+2. Import Header di app.js
 
-* Update code nya:
+		import { Header } from './components/common' 
+
+3. Update code di app.js:
 
 		<Provider store={createStore(reducers)}>
 			<View>
@@ -318,46 +319,83 @@ Penjelasan code:
 			</View>
 		</Provider>
 
-* Refresh emulator screen.
+4. Refresh emulator screen.
 
 ![tech_stack](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_300,w_150/v1495948874/technology_stack_vnas6e.png)
 
 ### Membuat State Library
 
-Kita akan membuat State Library, dalam aplikasi ini akan ada 2 buah library data, yaitu *List of Library* dan *Library Currently Selected*, List Library adalah daftar seluruh data dan Library Selected adalah data yang di select/view oleh user.
+Kita akan membuat **State**, dalam aplikasi ini akan ada 2 buah library data, yaitu **List of Library** dan **Library Currently Selected**, List Library adalah daftar seluruh data dan Library Selected adalah data yang di select/view oleh user.
 
 Aplikasi ini tidak melibatkan database di server, sebaliknya *hard coding* (statik data) didalam app itu sendiri (daftar data akan di masukan ke dalam aplikasi secara manual).
 
-#### Reducer
+### Reducer
 
-**Reducer** menghasilkan **State** data dan State adalah **Data** dari sebuah aplikasi. Didalam folder reducers index.js akan memuat libary data di dalamnya:
+**Reducer** menghasilkan **State** data dan State adalah **Data** dari sebuah aplikasi. 
 
-	libraries = () => {
-		[...]
-	};
+1. Didalam folder reducers **index.js** akan memuat library data di dalamnya:
 
-Kita akan membuat 2 buah reducer terpisah, yaitu Library Reducer dan Selection Reducer.
+		libraries = () => []
+
+2. Selanjutnya kita akan membuat 2 buah **reducer** terpisah, yaitu **Library Reducer** dan **Selection Reducer**.
 
 ![two-reducers](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_200,w_700/v1495953135/dua-reducer_yjstan.png)
 
-Untuk itu buat file baru LibraryReducer.js dalam folder reducers, dan tuliskan code:
+Untuk itu buatlah file baru nama **LibraryReducer.js** dalam folder reducers, dan tuliskan codenya sbb:
 
-	export default () => [];
+	export default () => [
+		
+	];
 
-Kemudian import ke dalam index.js
+3. Kemudian import ke dalam file **index.js**, pada file reducers/index.js:
 
-	import LibraryReducer from './LibraryReducer';
+		import LibraryReducer from './LibraryReducer';
 
-Update function combineReducer sbb:
+4. Update function combineReducer pada file reducers/index.js sbb:
 
-	export default combineReducers({
-		libraries: LibraryReducer
-	}); 		
+		export default combineReducers({
+			libraries: LibraryReducer
+		}); 		
 
-Detail code -> Perlu di ingat disini kita lakukan assign **LibraryReducer** dengan **KEY** **libraries**.
+	**Detail code** -> Perlu di ingat disini kita lakukan assign **LibraryReducer** dengan **KEY** **libraries**.
 
-Membuat file json LibraryList.json di dalam folder reducers. (Silahkan copas file json di repository).
+5. Membuat file json **LibraryList.json** di dalam folder reducers. (Silahkan copas file json di repository).
 
-> **Catatan** file json memuat content seluruh nya adalah string, jadi seluruh text content selain value integer harus diberi *"double/single quote"*, contoh: "id": 0, "title": "Webpack"..
+> **Catatan** file json memuat content seluruh nya adalah string, jadi seluruh text content selain value integer harus diberi *"double/single quote"*, contoh: 
+		
+	"id": 0, 
+	"title": "Webpack"
+	....
 
-next 87 connect function.
+6. Pada file LibraryReducer.js import file json tsb sebagai **data** dari array of object:
+
+		import data from './reducers/LibraryList.json'
+
+		export default () => [
+			
+		];	
+
+	Update menjadi:
+
+		export default () => data; 	
+
+7. Membuat component baru untuk merender list of data json diatas. Buatlah file components/LibraryList.js dan masukan code boiler plate sbb:
+
+		import React, { Component } from 'react';
+
+		class LibraryList extends Component {
+			render(){
+				return;
+			}
+		}
+
+		export default LibraryList;
+
+
+
+
+
+
+### Connect Function.
+
+
