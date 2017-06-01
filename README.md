@@ -391,11 +391,80 @@ Untuk itu buatlah file baru nama **LibraryReducer.js** dalam folder reducers, da
 
 		export default LibraryList;
 
-
-
-
-
+Untuk menampilkannya kita membutuhkan **connect helper**. 	
 
 ### Connect Function.
 
+![connect-helper](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_416,w_400/v1496299423/connect-helper_kywazf.png)
+
+**Detil gambar**:
+
+Untuk menghubungkan antara Store dan LibraryList kita membutuhkan **Connect helper**, Connect helper adalah function yang akan mendorong (push) data dari Store menuju ke LibraryList.
+
+Connect helper adalah fitur dari React-Redux library. Dimana React-Redux adalah perekat antara programming Redux dengan React.
+
+Cara penerapannya sbb:
+
+1. import connect pada file LibraryList.js
+
+		import { connect } from 'react-redux';
+
+2. aplikasi connect pada export:
+
+		export default connect()(LibraryList);
+
+3. Buat function baru mapStateToProps():
+
+		const mapStateToProps = state => {
+			console.log(state);
+		};
+
+
+
+Detail code:
+
+Tujuan dari function mapStateToProps adalah mengambil Global State Object dari Store dan di maping di jadikan sebagai props dari LibraryList.  
+
+Test pada console:
+
+	console.log(state);
+   		
+Refresh screen:
+
+![console-log](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_325,w_400/v1496323525/console-log_rpzwyx.png)
+
+Keterangan gambar:
+
+Terlihat pada console data dengan key libraries array tampil.
+
+Sekarang bagaimana cara nya mapStateToProps function ini bisa ditampilkan kedalam component LibraryList, caranya adalah -> object yang di return dalam function mapStateToProps dapat digunakan sebagai props pada component class.
+
+Step nya:
+
+* Return dalam object, ganti console log dengan return object LibraryList.
+
+		return { libraries: state.libraries }
+
+Menjadi:
+
+		const mapStateToProps = state => {
+			return { libraries: state.libraries };
+		};
+
+* Update component LibraList menjadi sbb:
+
+		class LibraryList extends Component {
+			render(){
+				console.log(this.props);
+				return;
+			}
+		}
+
+	*gunakan console.log untuk test do console.
+
+	![console-log-2](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_170,w_400/v1496327623/console-log-2_gwy2dy.png)	
+
+**Diagram cara kerja Redux**
+
+![cara-kerja](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_477,w_500/v1496328035/how_it_work_diagram_tuh14v.png)
 
