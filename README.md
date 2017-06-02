@@ -419,8 +419,6 @@ Cara penerapannya sbb:
 			console.log(state);
 		};
 
-
-
 Detail code:
 
 Tujuan dari function mapStateToProps adalah mengambil Global State Object dari Store dan di maping di jadikan sebagai props dari LibraryList.  
@@ -464,7 +462,102 @@ Menjadi:
 
 	![console-log-2](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_170,w_400/v1496327623/console-log-2_gwy2dy.png)	
 
-**Diagram cara kerja Redux**
+**Diagram cara kerja App dengan Redux**
 
 ![cara-kerja](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_477,w_500/v1496328035/how_it_work_diagram_tuh14v.png)
 
+Keterangan gambar:
+
+Pada saat aplikasi boot up untuk pertama kali, Redux membuat Store baru menggunakan Library Reducer,
+instance Store tersebut menjalankan Reducer satu kali, sehingga akan menghasilkan State yang kita sebut libraries, yang adalah array yang berisi object data.
+Setelah terbentuk Store, akan di lewatkan ke Provider sebagai **props**, Provider adalah merupakan React Component, penghubung antara React & Redux.
+Kemudian App merender ke screen yang notabene adalah render dari LibraryList component.
+Connect function mengubungkan LibraryList dengan Provider, dengan function **mapStateToProps** menjadikan Data State menjadi Props, sehingga bisa ditampilkan oleh App sebagai props dari LibraryList, kemudian LibraryList akan ditampilkan di app.js untuk tampil di screen.
+
+---
+
+### React Native ListView.
+
+**ListView** adalah component disediakan oleh **React Native** untuk menangani render data yang sangat besar, tanpa membebani kerja memory handphone. Cara kerja ListView adalah membuat **instant** component hanya untuk data yang tampil di screen saja, bila user scroll screen kebawah atau keatas maka ListView akan melakukan **Reusable Component** untuk data berikutnya yang akan tampil saat user scroll.
+
+![list-view](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_450,w_150/v1496381436/listView_wobr5g.png) 
+
+### Menerapkan ListView pada Aplikasi.
+
+1. Pada file LibraryList.js import ListView from ReactNative.
+
+		import ListView from 'react-native';
+
+2. Menambahkan componentWillMount lifecycle method, agar pada saat aplikasi start dapat tertriger. 		
+
+		class LibraryList extends Component {
+			componentWillMount() {
+				
+			}
+
+			render(){
+				...
+		}
+
+3. Tambahkan code boilerplate (copas) pada method diatas hingga menjadi sbb:
+
+		componentWillMount() {
+			const ds = new ListView.DataSource({
+				rowHasChanged: (r1, r2) => r1 !== r2
+			});
+
+			this.dataSource = ds.cloneWithRows(this.props.libraries);     
+		}
+
+4. Update render method diatas dengan menambahkan ListView Tag: 
+
+		render(){
+			return(
+				<ListView 
+					dataSource = { this.dataSource }
+				/>
+			)
+		}
+
+5. Tambahkan render row pada props ListView:
+
+		render(){
+			return(
+				<ListView 
+					dataSource = { this.dataSource }
+					renderRow = { this.renderRow }
+				/>
+
+6. Define helper method renderRow untuk merender single item of data dalam bentuk row, tempatkan diatas render() method:
+
+		renderRow() {
+				
+		}
+
+7. Membuat component baru dengan nama **ListItem** untuk memanggil data dalam bentuk single row.
+
+		import React, { Component } from 'react';
+
+		class ListItem extends Component {
+			render() {
+						
+			}
+		}
+
+		export default ListItem; 
+
+7. Pada file LibraryList import ListItem:
+
+8. Tambahkan ListItem Tag pada renderRow method dan tambahkan library sebagai **argument** dan jadikan props pada ListItem:
+
+		renderRow(library) {
+			<ListItem library={ library } />;	
+		}
+
+9. Pada ListItem.js tambahkan CardSection Tag untuk menampilkan List dari Item data.
+
+		import CardSection from './common';
+
+10. Refresh screen -> sukses!
+
+![sukses-screen](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_550,w_300/v1496402975/success-screen_tj0m9i.png)				
