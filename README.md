@@ -560,4 +560,187 @@ Connect function mengubungkan LibraryList dengan Provider, dengan function **map
 
 10. Refresh screen -> sukses!
 
-![sukses-screen](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_550,w_300/v1496402975/success-screen_tj0m9i.png)				
+![sukses-screen](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_550,w_300/v1496402975/success-screen_tj0m9i.png)
+
+### Tambahkan Style
+
+	const styles = {
+		titleStyle: {
+			fontSize: 18,
+			paddingLeft: 15
+		}
+	}
+
+Lakukan destructure:
+
+	const {titleStyle} = styles;
+
+Sisipkan:
+
+	<Text style={titleStyle}>
+
+Pada app.js, beri style pada view:
+
+	<View style={{ flex: 1 }} >
+
+### Membuat selection reducer
+
+Buat file baru beri nama reducers/SelectionReducer.js:
+
+	export default () => {
+		return null;
+	};
+
+**return null** pada reducer untuk mencegah error undefined. Menempatkan null pada SelectionReducer adalah sebagai default pada saat aplikasi start tidak ada item yang ter-seleksi.	
+
+Pada file reducers/index.js, import SelectionReducer (to wire up)
+
+	import SelectionReducer from './SelectionReducer';
+
+dan 
+
+	selectedLibraryId: SelectionReducer
+	
+Menjadi:
+
+	export default combineReducers({
+		libraries: LibraryReducer,
+		selectedLibraryId: SelectionReducer 
+	}); 			
+
+### Action Creator
+
+Action Creator adalah JS function -> return action (*Action Creator is a function that return an Action*)
+
+**Component -> Action Creator -> Action -> Reducer**
+
+- Buat folder baru Actions dibawah folder src,
+- Buat file baru index.js
+
+Pada index.js sebagai Action Creator buat plain function sbb:
+
+	export const selectLibrary = () => {
+		
+	}; 
+
+dan mereturn sebuah Action:
+
+	return {
+		type: 'select_library'
+	};
+
+menjadi: 
+
+	export const selectLibrary = () => {
+		return {
+			type: 'select_library'
+		};
+	};
+
+Kemudian lewatkan libraryId sebagai argumen menjadi sbb:
+
+	export const selectLibrary = (libraryId) => {
+		return {
+			type: 'select_library',
+			payload: libraryId
+		};
+	};
+
+#### Cara memanggil Action Creator
+
+Memanggil Action Creator di file ListItem.js, pada saat user klik item maka item tersebut akan terseleksi.
+
+**import Action Creator ke dalam ListItem.js**:
+
+	import * as actions from '../actions'; // .. karena dari lokasi saat ini lompat ke direktori actions
+
+**import connect dari react-redux**
+
+	import { connect } from 'react-redux';
+
+**Update export default statement dengan connect helper**
+
+	export default connect()(ListItem);	
+	
+**Catatan**: *connect helper mempunyai 2 buah argument, pertama melewatkan mapStateToProps, kedua melewatkan seluruh actions object. Karena kita tidak memiliki mapStateToProps disini maka argumen pertama isi dengan **null***.
+
+	export default connect(null, actions)(ListItem);
+
+**Test dengan console.log**
+
+	render() {
+		const {titleStyle} = styles;
+		console.log(this.props);
+	...
+	
+![console-log-select](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_300,w_600/v1496464602/console-log-select_ggycpr.png)		
+
+**Menambahkan Component TouchableWithoutFeedback & View**
+
+	import { Text, TouchableWithoutFeedback, View } from 'react-native';
+
+**Update component menjadi sbb:**
+
+	<TouchableWithoutFeedback
+		onPress={() => this.props.selectLibrary(id)}
+		>
+			<View>
+				<CardSection>
+					<Text style={titleStyle}>
+						{this.props.library.title}
+					</Text>
+				</CardSection>
+			</View>
+	</TouchableWithoutFeedback>
+
+**Lakukan destructure code**
+
+	const { id, title} = this.props.library;
+
+Menjadi:
+
+	class ListItem extends Component {
+		render() {
+			const {titleStyle} = styles;
+			const { id, title } = this.props.library;
+
+			return(
+				<TouchableWithoutFeedback
+					onPress={() => this.props.selectLibrary(id)}
+				>
+					<View>
+						<CardSection>
+							<Text style={titleStyle}>
+								{title}
+							</Text>
+						</CardSection>
+					</View>
+				</TouchableWithoutFeedback>	
+			);				
+		}
+	}	
+
+**Pada file SelectionReducer.js test dengan console.log dan tambahkan argumen reducer**
+
+	export default (state, action) => {
+			console.log(action);
+			return null;
+	};
+
+![consolelog-select-id](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_320,w_800/v1496472223/console-log-select-id_xz51od.png)
+
+**Menambahkan switch**
+
+Setiap reducer yang kita buat memiliki statement switch di dalamnya, sebagai condition statement:
+
+	export default (state = null, action) => {
+			switch (action.type) {
+					case 'select_library':
+							return action.payload;
+			default: 
+					return state;
+		}     
+	};
+
+### Expanding Row
+
