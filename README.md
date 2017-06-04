@@ -832,3 +832,8 @@ Refresh Screen
 
 ![finish](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_600,w_300/v1496580861/finish_mfqxwy.png)		
 
+Selesai Terimakasih :)
+
+Kritik & Saran ke: jsp.dio@gmail.com
+
+Privat & Training Kelas ke WA: 0878 788 669 43
