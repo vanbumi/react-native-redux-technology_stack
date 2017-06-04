@@ -177,6 +177,10 @@ Hasilnya:
 
 ## Membuat aplikasi Redux dengan React Native
 
+![finish](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_600,w_300/v1496580861/finish_mfqxwy.png)
+
+Kita akan membuat aplikasi yang menampilkan daftar keahlian dalam programming dimana bila item daftar keahlian tersebut di klik makan akan tampil keterangan dari item tersebut dibawahnya.
+
 **Membuat new aplikasi**
 
 	react-native init technology_stack
@@ -743,4 +747,88 @@ Setiap reducer yang kita buat memiliki statement switch di dalamnya, sebagai con
 	};
 
 ### Expanding Row
+
+Pada file ListItem.js sekarang saatnya menambahkan mapStateToProps:
+
+	const mapStateToProps = state => {
+		return { selectedLibraryId: state.selectedLibraryId }
+	};
+
+Lewatkan mapStateToProps pada connect statement:
+
+	export default connect(mapStateToProps, actions)(ListItem);  
+
+Tambahkan helper method renderDescription:
+
+	renderDescription() {
+		if (this.props.library.id === this.props.selectedLibraryId ) {
+			return (
+				<Text>{this.props.library.description}</Text>
+			);
+		}
+	};
+
+Destructure:
+
+const { library, selectedLibraryId } = this.props
+
+Panggil method renderDescription pada render method:
+
+	{this.renderDescription()};
+
+menjadi:
+
+	<View>
+		<CardSection>
+			<Text style={titleStyle}>
+				{title}
+			</Text>
+		</CardSection>
+		{this.renderDescription()}
+	</View>
+
+### Refactor the Code!
+
+Update mapStateToProps menjadi sbb :
+
+	const mapStateToProps = (state, ownProps) => {
+		const expanded = state.selectedLibraryId === ownProps.library.id;
+
+		return { expanded }
+	};
+
+Update renderDescription:
+
+	renderDescription() {
+		const { library, expanded } = this.props;
+
+		if (expanded) {
+			return (
+				<Text>{library.description}</Text>
+			);
+		}
+	};
+
+Refresh the browser
+
+#### Stylish
+
+	<Text style={{ flex: 1, paddingLeft: 15, color: '#000' }}>
+		{library.description}
+	</Text>
+
+#### Menambahkan Layout Animation
+
+	import {..., LayoutAnimation} from 'react-native'
+
+Tambahkan lifecycle method
+
+	class ListItem extends Component {
+		componentWillUpdate() {
+			LayoutAnimation.spring();
+		}	
+
+Refresh Screen
+
+![finish](http://res.cloudinary.com/medioxtra/image/upload/c_scale,h_600,w_300/v1496580861/finish_mfqxwy.png)		
 
